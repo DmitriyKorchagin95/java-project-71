@@ -16,15 +16,15 @@ class App implements Callable<Integer> {
     private String format;
 
     @Parameters(index = "0", paramLabel = "filepath1", description = "Path to first file.")
-    private String filepPath1;
+    private String filePath1;
 
     @Parameters(index = "1", paramLabel = "filepath2", description = "Path to second file.")
-    private String filepPath2;
+    private String filePath2;
 
     @Override
     public Integer call() throws Exception {
-//        var diff = Differ.generate(filePath1, filePath2);
-//        System.out.println(diff);
+        var diff = Differ.generate(filePath1, filePath2);
+        System.out.println(diff);
         return 0;
     }
 
