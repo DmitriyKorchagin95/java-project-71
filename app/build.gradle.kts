@@ -32,6 +32,10 @@ tasks.test {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml"))
+    }
 }
 
 sonar {
@@ -39,5 +43,7 @@ sonar {
         property("sonar.projectKey", "DmitriyKorchagin95_java-project-71")
         property("sonar.organization", "dmitriykorchagin95")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+        property("sonar.java.coveragePlugin", "jacoco")
     }
 }
