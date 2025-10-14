@@ -1,5 +1,5 @@
 plugins {
-    id("com.github.ben-manes.versions") version "0.53.0"
+    id("com.github.ben-manes.versions")
     id("org.sonarqube") version "6.3.1.5724"
     jacoco
     checkstyle
@@ -18,11 +18,11 @@ repositories {
 }
 
 dependencies {
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
-    implementation("info.picocli:picocli:4.7.7")
-    testImplementation(platform("org.junit:junit-bom:6.0.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.0.0")
+    implementation(libs.jackson.databind)
+    implementation(libs.picocli)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 tasks.test {
