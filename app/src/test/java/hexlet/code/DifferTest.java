@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DifferTest {
     private static String filePath1;
@@ -35,7 +36,7 @@ class DifferTest {
     }
 
     @Test
-    void testGenerateWithAbsolutePaths() throws Exception {
+    void testGenerateWithAbsolutePath() throws Exception {
         String absolutePath1 = Path.of(filePath1).toAbsolutePath().toString();
         String absolutePath2 = Path.of(filePath2).toAbsolutePath().toString();
 
@@ -55,17 +56,16 @@ class DifferTest {
     }
 
     @Test
-    void testGenerateMirroredFileWithAbsolutePath() throws Exception {
-        String actual = Differ.generate(filePath1, Path.of(filePath1).toAbsolutePath().toString());
-
-        String expected = """
-                {
-                    follow: false
-                    host: hexlet.io
-                    proxy: 123.234.53.22
-                    timeout: 50
-                }""";
-
+    void testGenerateWithEmptyFile() throws Exception {
+        String emptyFile = "src/test/resources/empty.json";
+        String actual = Differ.generate(emptyFile, emptyFile);
+        String expected = "{}";
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGenerateWithInvalidFilePath() {
+        String invalidFile = "src/test/resources/invalid.json";
+        assertThrows(Exception.class, () -> Differ.generate(invalidFile, invalidFile));
     }
 }
