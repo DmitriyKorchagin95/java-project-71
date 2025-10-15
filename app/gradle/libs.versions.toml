@@ -12,6 +12,8 @@ junit = "6.0.0"
 
 [libraries]
 
+jackson-dataformat-yaml = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.20.0"
+
 jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.20.0"
 
 picocli = "info.picocli:picocli:4.7.7"

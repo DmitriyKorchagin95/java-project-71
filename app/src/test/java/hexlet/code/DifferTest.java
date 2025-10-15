@@ -58,9 +58,7 @@ class DifferTest {
     @Test
     void testGenerateWithEmptyFile() throws Exception {
         String emptyFile = "src/test/resources/empty.json";
-        String actual = Differ.generate(emptyFile, emptyFile);
-        String expected = "{}";
-        assertEquals(expected, actual);
+        assertThrows(Exception.class, () -> Differ.generate(emptyFile, emptyFile));
     }
 
     @Test

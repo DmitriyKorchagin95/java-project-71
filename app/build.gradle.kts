@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.jackson.dataformat.yaml)
     implementation(libs.jackson.databind)
     implementation(libs.picocli)
     testImplementation(platform(libs.junit.bom))
