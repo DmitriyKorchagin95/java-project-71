@@ -1,7 +1,7 @@
 # Makefile
 run-dist: # run app
 	cd app  && ./gradlew clean installDist
-	./app/build/install/app/bin/app app/src/main/resources/file1.json app/src/main/resources/file2.json
+	./app/build/install/app/bin/app app/src/test/resources/empty.json app/src/test/resources/empty.json
 
 build: # build app
 	cd app  && ./gradlew clean build

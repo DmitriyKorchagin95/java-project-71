@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -17,9 +18,14 @@ public final class Differ {
     private Differ() {
     }
 
+    // 1. Read file
+    // 2. Parse data
+    // 3. Choose format
+    // 4. Format data
+    // 5. Output data
     public static String generate(String filePath1, String filePath2) throws IOException {
-        var dataOfFile1 = getData(readFile(filePath1));
-        var dataOfFile2 = getData(readFile(filePath2));
+        var dataOfFile1 = Parser.parseFile(filePath1);
+        var dataOfFile2 = Parser.parseFile(filePath2);
 
         Set<String> keys = new TreeSet<>();
         keys.addAll(dataOfFile1.keySet());
@@ -50,15 +56,6 @@ public final class Differ {
 
         sb.append("}");
         return sb.toString();
-    }
-
-    private static Map<String, Object> getData(String content) throws JsonProcessingException {
-        return new ObjectMapper().readValue(content, new TypeReference<>() {
-        });
-    }
-
-    private static String readFile(String filePath) throws IOException {
-        return Files.readString(Path.of(filePath));
     }
 
     private static void appendLine(StringBuilder sb, String sign, String key, Object value) {
