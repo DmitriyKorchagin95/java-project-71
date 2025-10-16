@@ -40,7 +40,7 @@ class DifferTest {
         Path file1 = getFixturePath(fileName1);
         Path file2 = getFixturePath(fileName2);
 
-        String actual = Differ.generate(file1.toString(), file2.toString());
+        String actual = Differ.generate(file1.toString(), file2.toString(), "stylish");
         assertEquals(expectedBasic, actual.trim());
     }
 
@@ -51,7 +51,7 @@ class DifferTest {
         Path file1 = getFixturePath(fileName1);
         Path file2 = getFixturePath(fileName2);
 
-        String actual = Differ.generate(file1.toString(), file2.toString());
+        String actual = Differ.generate(file1.toString(), file2.toString(), "stylish");
         assertEquals(expectedIdentical, actual.trim());
     }
 
@@ -62,13 +62,14 @@ class DifferTest {
         Path file1 = getFixturePath(fileName1);
         Path file2 = getFixturePath(fileName2);
 
-        assertThrows(Exception.class, () -> Differ.generate(file1.toString(), file2.toString()));
+        assertThrows(Exception.class, () -> Differ.generate(file1.toString(), file2.toString(), "stylish"));
     }
 
     @Test
     @DisplayName("Should throw when file does not exist")
     void testGenerateNonexistentFile() {
         Path nonexistent = getFixturePath("empty.json");
-        assertThrows(Exception.class, () -> Differ.generate(nonexistent.toString(), nonexistent.toString()));
+        assertThrows(Exception.class,
+                () -> Differ.generate(nonexistent.toString(), nonexistent.toString(), "stylish"));
     }
 }
