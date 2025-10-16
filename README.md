@@ -7,4 +7,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DmitriyKorchagin95_java-project-71&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DmitriyKorchagin95_java-project-71)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=DmitriyKorchagin95_java-project-71&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=DmitriyKorchagin95_java-project-71)
 ### Differ demo
+diff flat json
 [![asciicast](https://asciinema.org/a/NUZPsktD23UNK2RwXUG28CsJM.svg)](https://asciinema.org/a/NUZPsktD23UNK2RwXUG28CsJM)
+diff recursive yml
+[![asciicast](https://asciinema.org/a/VNzm6P2KrTGTzZxO7OuHOg57O.svg)](https://asciinema.org/a/VNzm6P2KrTGTzZxO7OuHOg57O)

@@ -3,144 +3,72 @@ package hexlet.code;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
-@DisplayName("Differ.generate() tests")
 class DifferTest {
 
-    private static Path json1;
-    private static Path json2;
-    private static Path yml1;
-    private static Path yml2;
-    private static Path emptyJsonFile;
-    private static Path emptyYmlFile;
-    private static Path invalidFile;
+    private static String expectedBasic;
+    private static String expectedIdentical;
 
     @BeforeAll
-    static void setUp() {
-        Path resourcesDir = Paths.get("src", "test", "resources");
-        json1 = resourcesDir.resolve("json1.json");
-        json2 = resourcesDir.resolve("json2.json");
-        yml1 = resourcesDir.resolve("yml1.yml");
-        yml2 = resourcesDir.resolve("yml2.yml");
-        emptyJsonFile = resourcesDir.resolve("emptyjsonfile.json");
-        emptyYmlFile = resourcesDir.resolve("emptyymlfile.yml");
-        invalidFile = resourcesDir.resolve("invalid.json");
+    static void setUp() throws Exception {
+        expectedBasic = readFixture("ExpectedBasic.txt");
+        expectedIdentical = readFixture("ExpectedIdentical.txt");
+    }
+
+    private static Path getFixturePath(String fileName) {
+        return Paths.get("src", "test", "resources", "fixtures", fileName).toAbsolutePath().normalize();
+    }
+
+    private static String readFixture(String fileName) throws Exception {
+        var path = getFixturePath(fileName);
+        return Files.readString(path).trim();
+    }
+
+    @ParameterizedTest
+    @CsvSource({"json1.json, json2.json", "yml1.yml, yml2.yml", "yml1.yml, json2.json"})
+    @DisplayName("Should correctly compare files of same format")
+    void testGenerateSameFormat(String fileName1, String fileName2) throws Exception {
+        Path file1 = getFixturePath(fileName1);
+        Path file2 = getFixturePath(fileName2);
+
+        String actual = Differ.generate(file1.toString(), file2.toString());
+        assertEquals(expectedBasic, actual.trim());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"json1.json, json1.json", "yml1.yml, yml1.yml", "json1.json, yml1.yml"})
+    @DisplayName("Should produce no diff for identical files")
+    void testGenerateIdenticalFiles(String fileName1, String fileName2) throws Exception {
+        Path file1 = getFixturePath(fileName1);
+        Path file2 = getFixturePath(fileName2);
+
+        String actual = Differ.generate(file1.toString(), file2.toString());
+        assertEquals(expectedIdentical, actual.trim());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"json1.json, empty.json", "yml1.yml, empty.yml", "invalid.json, invalid.yml"})
+    @DisplayName("Should throw exception for invalid or empty files")
+    void testGenerateEmptyFile(String fileName1, String fileName2) {
+        Path file1 = getFixturePath(fileName1);
+        Path file2 = getFixturePath(fileName2);
+
+        assertThrows(Exception.class, () -> Differ.generate(file1.toString(), file2.toString()));
     }
 
     @Test
-    @DisplayName("Basic diff between two json files")
-    void testGenerateBasicJsonFormat() throws Exception {
-        String actual = Differ.generate(json1.toString(), json2.toString());
-
-        String expected = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("Basic diff between two yml files")
-    void testGenerateBasicYmlFormat() throws Exception {
-        String actual = Differ.generate(yml1.toString(), yml2.toString());
-
-        String expected = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("Diff with absolute file paths")
-    void testGenerateWithAbsolutePaths() throws Exception {
-        String absolutePath1 = json1.toAbsolutePath().toString();
-        String absolutePath2 = yml2.toAbsolutePath().toString();
-
-        String actual = Differ.generate(absolutePath1, absolutePath2);
-
-        String expected = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("Identical json files produce no differences")
-    void testGenerateIdenticalJsonFiles() throws Exception {
-        String actual = Differ.generate(json1.toString(), json1.toString());
-
-        String expected = """
-                {
-                    follow: false
-                    host: hexlet.io
-                    proxy: 123.234.53.22
-                    timeout: 50
-                }""";
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("Identical yml files produce no differences")
-    void testGenerateIdenticalYmlFiles() throws Exception {
-        String actual = Differ.generate(yml1.toString(), yml1.toString());
-
-        String expected = """
-                {
-                    follow: false
-                    host: hexlet.io
-                    proxy: 123.234.53.22
-                    timeout: 50
-                }""";
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("Empty json file should cause an exception")
-    void testGenerateEmptyJsonFile() {
-        assertThrows(Exception.class, () ->
-                Differ.generate(json1.toString(), emptyJsonFile.toString()));
-    }
-
-    @Test
-    @DisplayName("Empty yml file should cause an exception")
-    void testGenerateEmptyYmlFile() {
-        assertThrows(Exception.class, () ->
-                Differ.generate(yml1.toString(), emptyYmlFile.toString()));
-    }
-
-    @Test
-    @DisplayName("Invalid file should cause an exception")
-    void testGenerateInvalidFile() {
-        assertThrows(Exception.class, () ->
-                Differ.generate(invalidFile.toString(), invalidFile.toString()));
+    @DisplayName("Should throw when file does not exist")
+    void testGenerateNonexistentFile() {
+        Path nonexistent = getFixturePath("empty.json");
+        assertThrows(Exception.class, () -> Differ.generate(nonexistent.toString(), nonexistent.toString()));
     }
 }

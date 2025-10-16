@@ -1,14 +1,6 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -34,14 +26,14 @@ public final class Differ {
         StringBuilder sb = new StringBuilder("{\n");
 
         for (String key : keys) {
-            boolean inFirst = dataOfFile1.containsKey(key);
-            boolean inSecond = dataOfFile2.containsKey(key);
+            boolean inFirstFile = dataOfFile1.containsKey(key);
+            boolean inSecondFile = dataOfFile2.containsKey(key);
 
-            if (inFirst && !inSecond) {
+            if (inFirstFile && !inSecondFile) {
                 appendLine(sb, "-", key, dataOfFile1.get(key));
-            } else if (!inFirst && inSecond) {
+            } else if (!inFirstFile && inSecondFile) {
                 appendLine(sb, "+", key, dataOfFile2.get(key));
-            } else if (inFirst) {
+            } else if (inFirstFile) {
                 Object v1 = dataOfFile1.get(key);
                 Object v2 = dataOfFile2.get(key);
 

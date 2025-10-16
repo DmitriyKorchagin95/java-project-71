@@ -11,6 +11,10 @@ import java.nio.file.Path;
 import java.util.Map;
 
 public final class Parser {
+
+    private Parser() {
+    }
+
     public static Map<String, Object> parseFile(String filePath) throws IOException {
         ObjectMapper mapper;
         String content = readFile(filePath);
