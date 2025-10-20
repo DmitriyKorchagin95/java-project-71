@@ -2,6 +2,7 @@ package hexlet.code;
 
 import hexlet.code.model.DiffEntry;
 import hexlet.code.model.DiffStatus;
+import hexlet.code.utils.Parser;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,13 +1,10 @@
-package hexlet.code;
+package hexlet.code.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Map;
 
 public final class Parser {
@@ -17,7 +14,7 @@ public final class Parser {
 
     public static Map<String, Object> parseFile(String filePath) throws IOException {
         ObjectMapper mapper;
-        String content = readFile(filePath);
+        String content = FileReader.readFile(filePath);
 
         if (content.startsWith("{")) {
             mapper = new ObjectMapper();
@@ -28,9 +25,5 @@ public final class Parser {
         return mapper.readValue(content, new TypeReference<>() {
         });
 
-    }
-
-    private static String readFile(String filePath) throws IOException {
-        return Files.readString(Path.of(filePath), Charset.defaultCharset());
     }
 }

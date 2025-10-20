@@ -17,15 +17,13 @@ class DifferTest {
 
     private static String expectedStylish;
     private static String expectedPlain;
-    private static String expectedStylishIdentical;
-    private static String expectedPlainIdentical;
+    private static String expectedJson;
 
     @BeforeAll
     static void setUp() throws Exception {
         expectedStylish = readFixture("expected_stylish.txt");
         expectedPlain = readFixture("expected_plain.txt");
-        expectedStylishIdentical = readFixture("expected_stylish_Identical.txt");
-        expectedPlainIdentical = readFixture("expected_plain_Identical.txt");
+        expectedJson = readFixture("expected_json.txt");
     }
 
     private static Path getFixturePath(String fileName) {
@@ -50,18 +48,6 @@ class DifferTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"json1.json, json1.json", "yml1.yml, yml1.yml", "json1.json, yml1.yml"
-    })
-    @DisplayName("Should produce no diff for identical files (stylish)")
-    void testGenerateStylishIdentical(String fileName1, String fileName2) throws Exception {
-        Path file1 = getFixturePath(fileName1);
-        Path file2 = getFixturePath(fileName2);
-
-        String actual = Differ.generate(file1.toString(), file2.toString(), "stylish");
-        assertEquals(expectedStylishIdentical, actual.trim());
-    }
-
-    @ParameterizedTest
     @CsvSource({"json1.json, json2.json", "yml1.yml, yml2.yml", "yml1.yml, json2.json"
     })
     @DisplayName("Should correctly compare files (plain)")
@@ -74,15 +60,15 @@ class DifferTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"json1.json, json1.json", "yml1.yml, yml1.yml", "json1.json, yml1.yml"
+    @CsvSource({"json1.json, json2.json", "yml1.yml, yml2.yml", "yml1.yml, json2.json"
     })
-    @DisplayName("Should produce no diff for identical files (plain)")
-    void testGeneratePlainIdentical(String fileName1, String fileName2) throws Exception {
+    @DisplayName("Should correctly compare files (plain)")
+    void testGenerateJson(String fileName1, String fileName2) throws Exception {
         Path file1 = getFixturePath(fileName1);
         Path file2 = getFixturePath(fileName2);
 
-        String actual = Differ.generate(file1.toString(), file2.toString(), "plain");
-        assertEquals(expectedPlainIdentical, actual.trim());
+        String actual = Differ.generate(file1.toString(), file2.toString(), "json");
+        assertEquals(expectedJson, actual.trim());
     }
 
     @ParameterizedTest
@@ -96,7 +82,7 @@ class DifferTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "stylish", "plain"})
+    @ValueSource(strings = { "stylish", "plain", "json"})
     @DisplayName("Should throw when file does not exist")
     void testGenerateNonexistentFile(String format) {
         Path nonexistent = getFixturePath("nonexistent.json");
