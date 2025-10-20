@@ -11,3 +11,5 @@ diff flat json
 [![asciicast](https://asciinema.org/a/NUZPsktD23UNK2RwXUG28CsJM.svg)](https://asciinema.org/a/NUZPsktD23UNK2RwXUG28CsJM)
 diff recursive yml
 [![asciicast](https://asciinema.org/a/VNzm6P2KrTGTzZxO7OuHOg57O.svg)](https://asciinema.org/a/VNzm6P2KrTGTzZxO7OuHOg57O)
+diif plain format
+[![asciicast](https://asciinema.org/a/fE55q4z12Ks4hZRj2cKo5dhsK.svg)](https://asciinema.org/a/fE55q4z12Ks4hZRj2cKo5dhsK)
