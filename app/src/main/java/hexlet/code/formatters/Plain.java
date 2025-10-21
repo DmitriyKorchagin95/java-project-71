@@ -23,7 +23,7 @@ public final class Plain {
         var  stringifyNewValue = diff.newValue() instanceof List<?> ? "[complex value]" : diff.newValue();
 
         return switch (diff.status()) {
-            case REMOVED -> String.format("Property '%s' was removed.", diff.key());
+            case REMOVED -> String.format("Property '%s' was removed", diff.key());
             case ADDED -> String.format("Property '%s' was added with value: %s", diff.key(), stringifyOldValue);
             case UPDATED -> String.format("Property '%s' was updated. From %s to %s",
                     diff.key(),
