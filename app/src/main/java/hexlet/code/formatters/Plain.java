@@ -24,8 +24,8 @@ public final class Plain {
 
         return switch (diff.status()) {
             case REMOVED -> String.format("Property '%s' was removed.", diff.key());
-            case ADDED -> String.format("Property '%s' was added with value: '%s'", diff.key(), stringifyOldValue);
-            case UPDATED -> String.format("Property '%s' was updated. From %s to '%s'",
+            case ADDED -> String.format("Property '%s' was added with value: %s", diff.key(), stringifyOldValue);
+            case UPDATED -> String.format("Property '%s' was updated. From %s to %s",
                     diff.key(),
                     stringifyOldValue,
                     stringifyNewValue
