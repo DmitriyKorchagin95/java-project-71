@@ -26,14 +26,6 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
-configurations {
-    all {
-        resolutionStrategy {
-            disableDependencyVerification()
-        }
-    }
-}
-
 tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
