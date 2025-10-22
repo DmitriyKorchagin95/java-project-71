@@ -1,4 +1,4 @@
-package hexlet.code.utils;
+package hexlet.code;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,9 +12,8 @@ public final class Parser {
     private Parser() {
     }
 
-    public static Map<String, Object> parseFile(String filePath) throws IOException {
+    public static Map<String, Object> parse(String content) throws IOException {
         ObjectMapper mapper;
-        String content = FileReader.readFile(filePath);
 
         if (content.startsWith("{")) {
             mapper = new ObjectMapper();
@@ -24,6 +23,5 @@ public final class Parser {
 
         return mapper.readValue(content, new TypeReference<>() {
         });
-
     }
 }

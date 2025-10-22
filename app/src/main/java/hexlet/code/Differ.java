@@ -2,11 +2,13 @@ package hexlet.code;
 
 import hexlet.code.model.DiffEntry;
 import hexlet.code.model.DiffStatus;
-import hexlet.code.utils.Parser;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Objects;
@@ -16,14 +18,20 @@ public final class Differ {
     private Differ() {
     }
 
-    // 1. Read file
-    // 2. Parse data
-    // 3. Find diff
-    // 4. Format data
-    // 5. Output data
     public static String generate(String filePath1, String filePath2, String format) throws IOException {
-        var data1 = Parser.parseFile(filePath1);
-        var data2 = Parser.parseFile(filePath2);
+        var content1 = Files.readString(Path.of(filePath1));
+        var content2 = Files.readString(Path.of(filePath2));
+        var data1 = Parser.parse(content1);
+        var data2 = Parser.parse(content2);
+        var diffs = findDiffs(data1, data2);
+        return Formatter.formatData(diffs, format);
+    }
+
+    public static String generate(String filePath1, String filePath2) throws IOException {
+        return generate(filePath1, filePath2, "stylish");
+    }
+
+    private static List<DiffEntry> findDiffs(Map<String, Object> data1, Map<String, Object> data2) {
         Set<String> keys = new TreeSet<>();
         keys.addAll(data1.keySet());
         keys.addAll(data2.keySet());
@@ -49,10 +57,6 @@ public final class Differ {
             }
         }
 
-        return Formatter.formatData(diffs, format);
-    }
-
-    public static String generate(String filePath1, String filePath2) throws IOException {
-        return generate(filePath1, filePath2, "stylish");
+        return diffs;
     }
 }
