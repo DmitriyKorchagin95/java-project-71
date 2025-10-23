@@ -12,14 +12,12 @@ public final class Parser {
     private Parser() {
     }
 
-    public static Map<String, Object> parse(String content) throws IOException {
-        ObjectMapper mapper;
-
-        if (content.startsWith("{")) {
-            mapper = new ObjectMapper();
-        } else {
-            mapper = new ObjectMapper(new YAMLFactory());
-        }
+    public static Map<String, Object> parse(String content, String dataFormat) throws IOException {
+        final ObjectMapper mapper = switch (dataFormat) {
+            case "json" -> new ObjectMapper();
+            case "yml", "yaml" -> new ObjectMapper(new YAMLFactory());
+            default -> throw new IllegalArgumentException("Unexpected data format value: %s".formatted(dataFormat));
+        };
 
         return mapper.readValue(content, new TypeReference<>() {
         });

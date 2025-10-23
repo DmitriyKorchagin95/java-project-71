@@ -38,13 +38,25 @@ class DifferTest {
     @ParameterizedTest
     @CsvSource({"json1.json, json2.json", "yml1.yml, yml2.yml", "yml1.yml, json2.json"
     })
+    @DisplayName("Should correctly compare files (default)")
+    void testGenerateDefault(String fileName1, String fileName2) throws Exception {
+        Path file1 = getFixturePath(fileName1);
+        Path file2 = getFixturePath(fileName2);
+
+        String actual = Differ.generate(file1.toString(), file2.toString());
+        assertEquals(expectedStylish, actual);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"json1.json, json2.json", "yml1.yml, yml2.yml", "yml1.yml, json2.json"
+    })
     @DisplayName("Should correctly compare files (stylish)")
     void testGenerateStylish(String fileName1, String fileName2) throws Exception {
         Path file1 = getFixturePath(fileName1);
         Path file2 = getFixturePath(fileName2);
 
         String actual = Differ.generate(file1.toString(), file2.toString(), "stylish");
-        assertEquals(expectedStylish, actual.trim());
+        assertEquals(expectedStylish, actual);
     }
 
     @ParameterizedTest
@@ -56,19 +68,19 @@ class DifferTest {
         Path file2 = getFixturePath(fileName2);
 
         String actual = Differ.generate(file1.toString(), file2.toString(), "plain");
-        assertEquals(expectedPlain, actual.trim());
+        assertEquals(expectedPlain, actual);
     }
 
     @ParameterizedTest
     @CsvSource({"json1.json, json2.json", "yml1.yml, yml2.yml", "yml1.yml, json2.json"
     })
-    @DisplayName("Should correctly compare files (plain)")
+    @DisplayName("Should correctly compare files (json)")
     void testGenerateJson(String fileName1, String fileName2) throws Exception {
         Path file1 = getFixturePath(fileName1);
         Path file2 = getFixturePath(fileName2);
 
         String actual = Differ.generate(file1.toString(), file2.toString(), "json");
-        assertEquals(expectedJson, actual.trim());
+        assertEquals(expectedJson, actual);
     }
 
     @ParameterizedTest

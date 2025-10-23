@@ -18,7 +18,7 @@ public final class Formatter {
             case "stylish" -> Stylish.formatToStylish(diffs);
             case "plain" -> Plain.formatToPlain(diffs);
             case "json" -> Json.formatToJson(diffs);
-            default -> throw new IllegalStateException("Unexpected format value: %s".formatted(format));
+            default -> throw new IllegalArgumentException("Unexpected format value: %s".formatted(format));
         };
     }
 }
